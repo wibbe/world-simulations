@@ -2,6 +2,7 @@
 SET(SOURCE
 	main.c
 	world.c
+	player.c
 )
 
 SET(LIBRARIES

@@ -1,6 +1,7 @@
 
-#include "world.h"
 #include <stdlib.h>
+#include "world.h"
+#include "vec3.h"
 
 struct cell
 {
