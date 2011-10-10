@@ -1,0 +1,7 @@
+h1. World Simulations
+
+A simple application that tries to reimplement a living world like the game From Dust.
+
+h2. License
+
+See the LICENSE file for legal information.
