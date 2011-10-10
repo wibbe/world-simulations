@@ -5,9 +5,24 @@
 
 void init()
 {
-	world_initialize(256, 256);
+	// Initialize GL
+	glClearColor(0.6, 0.6, 0.6, 0);
 	
-	glClearColor(0, 0, 0, 0);
+  glClearDepth(1.0f);
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LESS);
+  glShadeModel(GL_SMOOTH);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
+  glActiveTexture(GL_TEXTURE0);
+  glEnable(GL_TEXTURE_2D);
+	
+	// Initialize the rest of the app
+	world_initialize(16, 16);
+	font_initialize();
+	player_initialize();
 }
 
 void destroy()
@@ -18,12 +33,16 @@ void destroy()
 void loop()
 {
 	int running = 1;
+	int width, height;
 	
 	while (running)
 	{
-		glClear(GL_COLOR_BUFFER_BIT || GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		player_tick();
+		glfwGetWindowSize(&width, &height);
+		
+		tick_frame();
+		draw_frame(width, height);
 		
 		glfwSwapBuffers();
 	
@@ -35,7 +54,7 @@ int main(int argc, char * argv[])
 {
 	glfwInit();
 	
-	if (glfwOpenWindow(800, 500, 8, 8, 8, 0, 24, 0, GLFW_WINDOW) == GL_TRUE)
+	if (glfwOpenWindow(800, 500, 8, 8, 8, 8, 24, 0, GLFW_WINDOW) == GL_TRUE)
 	{
 		init();		
 		loop();

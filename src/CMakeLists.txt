@@ -3,6 +3,12 @@ SET(SOURCE
 	main.c
 	world.c
 	player.c
+	simplex.c
+	font.c
+	game.c
+	vec3.c
+	util.c
+	solver.c
 )
 
 SET(LIBRARIES
