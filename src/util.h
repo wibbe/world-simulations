@@ -21,4 +21,6 @@
 
 void stb__sbgrowf(void **arr, int increment, int itemsize);
 
+char * file_content(const char * filename, int * length);
+
 #endif

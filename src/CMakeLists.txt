@@ -9,6 +9,10 @@ SET(SOURCE
 	vec3.c
 	util.c
 	solver.c
+	heightmap.c
+	stb_image.c
+	textures.c
+	materials.c
 )
 
 SET(LIBRARIES

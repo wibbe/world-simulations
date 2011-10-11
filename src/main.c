@@ -8,21 +8,24 @@ void init()
 	// Initialize GL
 	glClearColor(0.6, 0.6, 0.6, 0);
 	
-  glClearDepth(1.0f);
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LESS);
-  glShadeModel(GL_SMOOTH);
+	glClearDepth(1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+	glShadeModel(GL_SMOOTH);
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
-  glActiveTexture(GL_TEXTURE0);
-  glEnable(GL_TEXTURE_2D);
+	glActiveTexture(GL_TEXTURE0);
+	glEnable(GL_TEXTURE_2D);
 	
 	// Initialize the rest of the app
 	world_initialize(16, 16);
+	heightmap_initialize();
 	font_initialize();
 	player_initialize();
+	textures_initialize();
+	materials_initialize();
 }
 
 void destroy()

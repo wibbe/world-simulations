@@ -1,6 +1,7 @@
 
 #include "util.h"
 #include <assert.h>
+#include <stdio.h>
 
 void stb__sbgrowf(void **arr, int increment, int itemsize)
 {
@@ -12,4 +13,23 @@ void stb__sbgrowf(void **arr, int increment, int itemsize)
       *arr = (void *) ((int *) p + 2);
       stb__sbm(*arr) = m;
    }
+}
+
+char * file_content(const char * filename, int * length)
+{
+	assert(filename && length);
+	FILE * file = fopen(filename, "r");
+	
+	if (!file)
+		return 0;
+	
+	fseek(file, 0, SEEK_END);
+	*length = ftell(file);
+	rewind(file);
+	
+	char * data = malloc(sizeof(char) * *length);
+	fread(data, sizeof(char), *length, file);
+	fclose(file);
+	
+	return data;
 }

@@ -1,5 +1,6 @@
 
 #include <GL/glfw.h>
+#include <stdio.h>
 
 #include "game.h"
 #include "vec3.h"
@@ -113,11 +114,21 @@ static void draw_gui(int width, int height)
 	disable_blend();
 }
 
+static void keyboard_event(int key, int action)
+{	
+	if (key == 'M' && action == GLFW_RELEASE)
+	{
+		printf("Reloading materials...\n");
+		reload_materials();
+	}
+}
+
 void player_initialize()
 {
 	_time_stamp = glfwGetTime();
 	
 	glfwGetMousePos(&_mouse_x, &_mouse_y);
+	glfwSetKeyCallback(&keyboard_event);
 }
 
 void tick_frame()

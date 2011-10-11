@@ -2,7 +2,7 @@
 #include "game.h"
 
 
-void solve(float dt, float * base, float * in, float * out, int width, int height)
+void solve_water_flow(float dt, float * base, float * in, float * out, int width, int height)
 {
 	const int offset[8] = { -width - 1, -width, -width + 1, -1, 1, width - 1, width, width + 1 };
 	const int size = width * height;
@@ -43,7 +43,10 @@ void solve(float dt, float * base, float * in, float * out, int width, int heigh
 		float water_dist = MIN(sum, *in_it) * dt;
 		*out_it += *in_it - water_dist;
 		
-		if (water_dist > 0.00f)
+		if (*out_it < 0.01f)
+			*out_it = 0.0f;
+		
+		if (water_dist > 0.0f)
 		{
 			for (i = 0; i < 8; ++i)
 			{
