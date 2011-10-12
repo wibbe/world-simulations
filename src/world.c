@@ -37,7 +37,8 @@ void world_initialize(int width, int height)
 		{
 			int index = _index(x, y);
 			
-			_rock_level[index] = simplex_noise(2, x * 0.1f, y * 0.1f, 1.0f) * 6.0f;
+			_rock_level[index] = (simplex_noise(1, x * 0.04f, y * 0.04f, 1.0f) * 10.0f) + 
+			                     (simplex_noise(4, x * 0.1f, y * 0.1f, 2.0f) * 1.0f);
 			_water_level_0[index] = _water_level_1[index] = 0.0f;
 			
 			_maxworld_height = MAX(_maxworld_height, _rock_level[index]);
@@ -57,14 +58,14 @@ void world_tick(float dt)
 	
 	// Add some water
 	if (glfwGetKey('Q') == GLFW_PRESS)
-		_water_level_old[_index(7, 7)] += 10.0f * dt;
+		_water_level_old[_index(23, 21)] += 15.0f * dt;
 		
 	if (glfwGetKey('E') == GLFW_PRESS)
 	{
-		_water_level_old[_index(7, 7)] = 0.0f;
+		_water_level_old[_index(23, 21)] = 0.0f;
 	}
 	
-	solve_water_flow(dt * 2.0f, _rock_level, _water_level_old, _water_level_new, world_width, world_height);
+	solve_water_flow(dt * 8.0f, _rock_level, _water_level_old, _water_level_new, world_width, world_height);
 	
 	update_ground_heightmap(_rock_level, 0);
 	update_water_heightmap(_rock_level, 0, _water_level_new);

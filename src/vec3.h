@@ -19,6 +19,7 @@ Vec3 vsub(Vec3 a, Vec3 b);
 float vdot(Vec3 v);
 float vlength(Vec3 v);
 Vec3 vscale(Vec3 v, float s);
+Vec3 vcross(Vec3 a, Vec3 b);
 
 Vec3 vnormalize(Vec3 v);
 

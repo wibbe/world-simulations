@@ -1,6 +1,7 @@
 
 #include "game.h"
 #include "util.h"
+#include "vec3.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,8 +17,11 @@ static struct {
 		GLuint texture;
 		GLuint uv_offset;
 		GLuint repeat;
+		GLuint sun_dir;
 	} uniforms;
 } _terrain_material;
+
+static Vec3 _sun_direction;
 
 // -- Util functions ----------------------------
 
@@ -97,6 +101,7 @@ static void create_terrain_material()
 	_terrain_material.uniforms.texture = glGetUniformLocation(_terrain_material.program, "texture");
 	_terrain_material.uniforms.uv_offset = glGetUniformLocation(_terrain_material.program, "uv_offset");
 	_terrain_material.uniforms.repeat = glGetUniformLocation(_terrain_material.program, "repeat");
+	_terrain_material.uniforms.sun_dir = glGetUniformLocation(_terrain_material.program, "sun_dir");
 }
 
 static void destroy_terrain_material()
@@ -111,6 +116,8 @@ static void destroy_terrain_material()
 void materials_initialize()
 {
 	create_terrain_material();
+
+	_sun_direction = vnormalize(vec3(0.5f, 0.7f, 0.4f));
 }
 
 void reload_materials()
@@ -128,6 +135,7 @@ void enable_terrain_material()
 	glUniform1i(_terrain_material.uniforms.texture, 0);
 	glUniform2f(_terrain_material.uniforms.repeat, (float)world_width, (float)world_height);
 	glUniform4f(_terrain_material.uniforms.uv_offset, u, v, w, h);
+	glUniform3f(_terrain_material.uniforms.sun_dir, _sun_direction.x, _sun_direction.y, _sun_direction.z);
 }
 
 void disable_materials()

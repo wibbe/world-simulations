@@ -14,7 +14,7 @@ enum FontTypes
 };
 
 /* Defines */
-#define WORLD_SCALE 4.0f
+#define WORLD_SCALE 2.0f
 
 /* Macros */
 #define PI 3.1415f

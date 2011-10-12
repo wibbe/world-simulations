@@ -44,3 +44,11 @@ Vec3 vnormalize(Vec3 v)
 	
 	return vscale(v, l);
 }
+
+Vec3 vcross(Vec3 a, Vec3 b)
+{    
+  return vec3(a.y * b.z - a.z * b.y,
+              a.z * b.x - a.x * b.z,
+              a.x * b.y - a.y * b.x);
+}
+
