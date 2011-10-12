@@ -2,14 +2,15 @@
 #include "game.h"
 
 
-void solve_water_flow(float dt, float * base, float * in, float * out, int width, int height)
+void solve_water_flow(float dt, float * rock, float * sand, float * in, float * out, int width, int height)
 {
 	const int offset[8] = { -width - 1, -width, -width + 1, -1, 1, width - 1, width, width + 1 };
 	const int size = width * height;
-	float * base_it = base;
+	float * rock_it = rock;
+	float * sand_it = sand;
 	float * in_it = in;
 	float * out_it = out;
-	const float * base_end = base + size;
+	const float * rock_end = rock + size;
 	int i;
 	float h_diff[8];
 	
@@ -19,22 +20,23 @@ void solve_water_flow(float dt, float * base, float * in, float * out, int width
 	
 	out_it = out;
 	
-	while (base_it != base_end)
+	while (rock_it != rock_end)
 	{
-		float h = *base_it + *in_it;
+		float h = *rock_it + *sand_it + *in_it;
 		float sum = 0.0f;
 		
 		// Calculate sum
 		for (i = 0; i < 8; ++i)
 		{
-			float * offset_base = base_it + offset[i];
+			float * offset_rock = rock_it + offset[i];
 			
-			if (offset_base >= base && offset_base < base_end)
+			if (offset_rock >= rock && offset_rock < rock_end)
 			{
 				float * offset_water = in_it + offset[i];
-				float diff = h - (*offset_base + *offset_water);
+				float * offset_sand = sand_it + offset[i];
+				float diff = h - (*offset_rock + *offset_sand + *offset_water);
 				h_diff[i] = MAX(diff, 0.0f);
-				if (h_diff[i] > 0.0f)
+				if (diff > 0.0f)
 					sum += h_diff[i];
 			}
 		}
@@ -47,9 +49,9 @@ void solve_water_flow(float dt, float * base, float * in, float * out, int width
 		{
 			for (i = 0; i < 8; ++i)
 			{
-				float * offset_base = base_it + offset[i];
+				float * offset_rock = rock_it + offset[i];
 			
-				if (offset_base >= base && offset_base < base_end)
+				if (offset_rock >= rock && offset_rock < rock_end)
 				{
 					float * offset_out = out_it + offset[i];
 					*offset_out += water_dist * (h_diff[i] / sum);
@@ -57,7 +59,8 @@ void solve_water_flow(float dt, float * base, float * in, float * out, int width
 			}
 		}
 		
-		base_it++;
+		rock_it++;
+		sand_it++;
 		in_it++;
 		out_it++;
 	}

@@ -13,6 +13,7 @@ static int _size = 0;
 static float _maxworld_height = 0.0f;
 
 static float * _rock_level = 0;
+static float * _sand_level = 0;
 static float * _water_level_0 = 0;
 static float * _water_level_1 = 0;
 static float * _water_level_new = 0;
@@ -25,6 +26,7 @@ void world_initialize(int width, int height)
 	_size = width * height;
 	
 	_rock_level = malloc(sizeof(float) * _size);
+	_sand_level = malloc(sizeof(float) * _size);
 	_water_level_0 = malloc(sizeof(float) * _size);
 	_water_level_1 = malloc(sizeof(float) * _size);
 	
@@ -40,6 +42,7 @@ void world_initialize(int width, int height)
 			
 			_rock_level[index] = (simplex_noise(1, x * 0.04f, y * 0.04f, 1.0f) * 5.0f * (1.0f + cos(dist * PI))) + 
 			                     (simplex_noise(4, x * 0.1f, y * 0.1f, 2.0f) * 1.0f);
+      _sand_level[index] = 0.0f;
 			_water_level_0[index] = _water_level_1[index] = 0.0f;
 			
 			_maxworld_height = MAX(_maxworld_height, _rock_level[index]);
@@ -52,22 +55,12 @@ void world_free()
 
 void world_tick(float dt)
 {
-	static int offset_x[9] = { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
-	static int offset_y[9] = { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
-	int x, y, i, step;
-	int offsets[9];
+	int i;
 	
-	// Add some water
-	if (glfwGetKey('Q') == GLFW_PRESS)
-		_water_level_old[_index(23, 21)] += 15.0f * dt;
-		
-	if (glfwGetKey('E') == GLFW_PRESS)
-	{
-		_water_level_old[_index(23, 21)] = 0.0f;
-	}
+  // River...
+	_water_level_old[_index(world_width / 2, world_height / 2 - 10)] += 5.0f * dt;
 
-	_water_level_old[_index(world_width / 2, world_height / 2 - 10)] = 0.2f;
-
+  // Make sure we have water at the borders
 	for (i = 0; i < world_width; ++i)
 	{
 	  int idx1 = _index(i, 0);
@@ -86,10 +79,12 @@ void world_tick(float dt)
 	  _water_level_old[idx2] = MAX(WATER_LEVEL - _rock_level[idx2], 0.0f);
   }
 	
-	solve_water_flow(dt * 8.0f, _rock_level, _water_level_old, _water_level_new, world_width, world_height);
+	// Step water simulation
+	solve_water_flow(dt * 8.0f, _rock_level, _sand_level, _water_level_old, _water_level_new, world_width, world_height);
 	
-	update_ground_heightmap(_rock_level, 0);
-	update_water_heightmap(_rock_level, 0, _water_level_new);
+	// Update heightmaps
+	update_ground_heightmap(_rock_level, _sand_level);
+	update_water_heightmap(_rock_level, _sand_level, _water_level_new);
 
 	{ // Swap water level buffers
 		float * tmp = _water_level_old;
@@ -104,3 +99,34 @@ void world_draw()
 	
 	render_heightmaps();
 }
+
+void world_add_sand(float dt)
+{
+  int x = floor(mouse_world_position.x / WORLD_SCALE);
+  int y = floor(mouse_world_position.z / WORLD_SCALE);
+
+  if (x >= 0 && x < world_width &&
+      y >= 0 && y < world_height)
+  {
+    _sand_level[_index(x, y)] += 2.0f * dt;
+    _sand_level[_index(x + 1, y)] += 2.0f * dt;
+    _sand_level[_index(x, y + 1)] += 2.0f * dt;
+    _sand_level[_index(x + 1, y + 1)] += 2.0f * dt;
+  }
+}
+
+void world_remove_sand(float dt)
+{
+  int x = floor(mouse_world_position.x / WORLD_SCALE);
+  int y = floor(mouse_world_position.z / WORLD_SCALE);
+
+  if (x >= 0 && x < world_width &&
+      y >= 0 && y < world_height)
+  {
+    _sand_level[_index(x, y)] = MAX(0.0f, _sand_level[_index(x, y)] - 2.0f * dt);
+    _sand_level[_index(x + 1, y)] = MAX(0.0f, _sand_level[_index(x + 1, y)] - 2.0f * dt);
+    _sand_level[_index(x, y + 1)] = MAX(0.0f, _sand_level[_index(x, y + 1)] - 2.0f * dt);
+    _sand_level[_index(x + 1, y + 1)] = MAX(0.0f, _sand_level[_index(x + 1, y + 1)] - 2.0f * dt);
+  }
+}
+

@@ -15,7 +15,8 @@ static struct {
 	
 	struct {
 		GLuint texture;
-		GLuint uv_offset;
+		GLuint uv_offset_rock;
+		GLuint uv_offset_sand;
 		GLuint repeat;
 		GLuint sun_dir;
 	} uniforms;
@@ -99,7 +100,8 @@ static void create_terrain_material()
 	_terrain_material.fragment = make_shader(GL_FRAGMENT_SHADER, "../../shaders/terrain_fragment.glsl");
 	_terrain_material.program = make_program(_terrain_material.vertex, _terrain_material.fragment);
 	_terrain_material.uniforms.texture = glGetUniformLocation(_terrain_material.program, "texture");
-	_terrain_material.uniforms.uv_offset = glGetUniformLocation(_terrain_material.program, "uv_offset");
+	_terrain_material.uniforms.uv_offset_rock = glGetUniformLocation(_terrain_material.program, "uv_offset_rock");
+	_terrain_material.uniforms.uv_offset_sand = glGetUniformLocation(_terrain_material.program, "uv_offset_sand");
 	_terrain_material.uniforms.repeat = glGetUniformLocation(_terrain_material.program, "repeat");
 	_terrain_material.uniforms.sun_dir = glGetUniformLocation(_terrain_material.program, "sun_dir");
 }
@@ -134,7 +136,8 @@ void enable_terrain_material()
 	glUseProgram(_terrain_material.program);
 	glUniform1i(_terrain_material.uniforms.texture, 0);
 	glUniform2f(_terrain_material.uniforms.repeat, (float)world_width, (float)world_height);
-	glUniform4f(_terrain_material.uniforms.uv_offset, u, v, w, h);
+  set_uv_offset_uniform(TEXTURE_STONE, _terrain_material.uniforms.uv_offset_rock);
+  set_uv_offset_uniform(TEXTURE_SAND, _terrain_material.uniforms.uv_offset_sand);
 	glUniform3f(_terrain_material.uniforms.sun_dir, _sun_direction.x, _sun_direction.y, _sun_direction.z);
 }
 

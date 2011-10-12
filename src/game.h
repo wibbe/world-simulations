@@ -29,12 +29,14 @@ enum FontTypes
 /* Globals */
 extern int world_width;
 extern int world_height;
+extern Vec3 mouse_world_position;
 
 /* Textures */
 enum Textures
 {
 	TEXTURE_DIRT,
 	TEXTURE_STONE,
+	TEXTURE_SAND,
 	TEXTURE_WATER
 };
 
@@ -52,6 +54,9 @@ void world_free();
 void world_tick(float dt);
 void world_draw();
 
+void world_add_sand(float dt);
+void world_remove_sand(float dt);
+
 /* Initialization */
 void world_initialize(int width, int height);
 void player_initialize();
@@ -61,7 +66,7 @@ void font_initialize();
 void materials_initialize();
 
 /* Solver */
-void solve_water_flow(float dt, float * base, float * in, float * out, int width, int height);
+void solve_water_flow(float dt, float * rock, float * sand, float * in, float * out, int width, int height);
 
 /* Rendering */
 void draw_frame();
@@ -77,6 +82,7 @@ void disable_blend();
 void enable_terrain_texture(GLenum unit);
 void disable_texture(GLenum unit);
 void get_texture_uv(int tex, float * u, float * v, float * width, float * height);
+void set_uv_offset_uniform(int tex, GLuint uniform);
 
 /* Materials */
 void reload_materials();

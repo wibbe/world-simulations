@@ -11,6 +11,8 @@ static double _time_stamp = -1.0f;
 static int _mouse_x = 0, _mouse_y = 0;
 static int _perform_picking = 0;
 
+Vec3 mouse_world_position;
+
 static void _apply_camera()
 {
 	glMatrixMode(GL_MODELVIEW);
@@ -122,15 +124,14 @@ static void input_event(int key, int action)
 		reload_materials();
 	}
 
-	if (key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-	{
-	  _perform_picking = 1;
-  }
+	if (key == GLFW_MOUSE_BUTTON_LEFT)
+	  _perform_picking = action == GLFW_PRESS;
 }
 
 void player_initialize()
 {
 	_time_stamp = glfwGetTime();
+	mouse_world_position = vzero();
 	
 	glfwGetMousePos(&_mouse_x, &_mouse_y);
 	glfwSetKeyCallback(&input_event);
@@ -142,6 +143,14 @@ void tick_frame()
 	double time_stamp = glfwGetTime();
 	double dt = time_stamp - _time_stamp;
 	_time_stamp = time_stamp;
+
+	if (glfwGetMouseButton(GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	{
+	  if (glfwGetKey(GLFW_KEY_LSHIFT))
+	    world_remove_sand(dt);
+	  else
+  	  world_add_sand(dt);
+  }
 	
 	_camera_control(dt);
 	world_tick(dt);
@@ -156,12 +165,7 @@ void draw_frame(int width, int height)
 	draw_world();
 	
 	if (_perform_picking)
-	{
-	  glFlush();
-	  _perform_picking = 0;
-	  Vec3 pos = mouse_pick();
-	  printf("Pick: (%3.1f, %3.1f, %3.1f)\n", pos.x, pos.y, pos.z);
-	}
+	  mouse_world_position = mouse_pick();
 
 	_apply_gui(width, height);
 	draw_gui(width, height);

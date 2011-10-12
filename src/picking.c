@@ -7,8 +7,6 @@ Vec3 mouse_pick()
   glfwGetMousePos(&mouse_x, &mouse_y);
   glfwGetWindowSize(&width, &height);
 
-  printf("Mouse: %dx%d\n", mouse_x, mouse_y);
-
   GLint viewport[4];
   GLdouble modelview[16];
   GLdouble projection[16];

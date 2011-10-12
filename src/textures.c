@@ -83,9 +83,21 @@ void get_texture_uv(int tex, float * u, float * v, float * width, float * height
 			*u = 0.0f;
 			*v = 0.0f; //15.0f / 16.0f;
 			break;
+		case TEXTURE_SAND:
+			*u = 2.0f / 16.0f;
+			*v = 1.0f / 16.0f;
+		  break;
 		case TEXTURE_WATER:
 			*u = 13.0f / 16.0f;
 			*v = 12.0f / 16.0f;
 			break;
 	}
 }
+
+void set_uv_offset_uniform(int tex, GLuint uniform)
+{
+	float u, v, w, h;
+	get_texture_uv(tex, &u, &v, &w, &h);
+	glUniform4f(uniform, u, v, w, h);
+}
+
