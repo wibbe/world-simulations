@@ -2,6 +2,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <GL/glew.h>
 #include <GL/glfw.h>
 
 /* Enums */
@@ -62,7 +63,9 @@ void solve_water_flow(float dt, float * base, float * in, float * out, int width
 void draw_frame();
 
 void render_heightmaps();
-void update_heightmaps(float * rock_height_data, float * sand_height_data, float * water_height_data);
+
+void update_ground_heightmap(float * rock_height_data, float * sand_height_data);
+void update_water_heightmap(float * rock_height_data, float * sand_height_data, float * water_height_data);
 
 /* Textures */
 void enable_terrain_texture(GLenum unit);

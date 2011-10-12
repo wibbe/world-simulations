@@ -2,8 +2,6 @@
 #include "game.h"
 #include "util.h"
 
-#include <GL/glfw.h>
-
 static float * _water_pos_vertex_array = 0;
 static float * _ground_pos_vertex_array = 0;
 static float * _ground_uv_vertex_array = 0;
@@ -44,7 +42,20 @@ void heightmap_initialize()
 		}
 }
 
-void update_heightmaps(float * rock_height_data, float * sand_height_data, float * water_height_data)
+void update_ground_heightmap(float * rock_height_data, float * sand_height_data)
+{
+	const int offset[8] = { -world_width - 1, -world_width, -world_width + 1, -1, 1, world_width - 1, world_width, world_width + 1 };
+	float * rock_it = rock_height_data;
+	float * rock_end = rock_height_data + (world_width * world_height);
+	float * ground_vertex_it = _ground_pos_vertex_array + 1;
+
+	for (; rock_it != rock_end; rock_it++, ground_vertex_it += 3)
+	{
+		*ground_vertex_it = *rock_it;
+  }
+}
+
+void update_water_heightmap(float * rock_height_data, float * sand_height_data, float * water_height_data)
 {
 	const int offset[8] = { -world_width - 1, -world_width, -world_width + 1, -1, 1, world_width - 1, world_width, world_width + 1 };
 	int i;
@@ -52,12 +63,9 @@ void update_heightmaps(float * rock_height_data, float * sand_height_data, float
 	float * rock_it = rock_height_data;
 	float * water_end = water_height_data + (world_width * world_height);
 	float * water_vertex_it = _water_pos_vertex_array + 1;
-	float * ground_vertex_it = _ground_pos_vertex_array + 1;
 	
-	for (;water_it != water_end; water_it++, rock_it++, water_vertex_it += 3, ground_vertex_it += 3)
+	for (;water_it != water_end; water_it++, rock_it++, water_vertex_it += 3)
 	{
-		*ground_vertex_it = *rock_it;
-		
 		if (*water_it < 0.001f)
 		{
 			float sum = *rock_it;

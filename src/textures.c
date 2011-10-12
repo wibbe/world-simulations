@@ -1,6 +1,5 @@
 
 #include <stdio.h>
-#include <GL/glfw.h>
 
 #include "game.h"
 

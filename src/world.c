@@ -1,6 +1,5 @@
 
 #include <stdlib.h>
-#include <GL/glfw.h>
 
 #include "game.h"
 #include "vec3.h"
@@ -51,8 +50,6 @@ void world_free()
 
 void world_tick(float dt)
 {
-	#define FLOW 0.01f
-	
 	static int offset_x[9] = { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
 	static int offset_y[9] = { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
 	int x, y, i, step;
@@ -67,9 +64,10 @@ void world_tick(float dt)
 		_water_level_old[_index(7, 7)] = 0.0f;
 	}
 	
-	solve_water_flow(dt * 8.0f, _rock_level, _water_level_old, _water_level_new, world_width, world_height);
+	solve_water_flow(dt * 2.0f, _rock_level, _water_level_old, _water_level_new, world_width, world_height);
 	
-	update_heightmaps(_rock_level, 0, _water_level_new);
+	update_ground_heightmap(_rock_level, 0);
+	update_water_heightmap(_rock_level, 0, _water_level_new);
 
 	{ // Swap water level buffers
 		float * tmp = _water_level_old;

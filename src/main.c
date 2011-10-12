@@ -1,10 +1,11 @@
 
 #include <stdio.h>
-#include <GL/glfw.h>
 #include "game.h"
 
 void init()
 {
+  glewInit();
+
 	// Initialize GL
 	glClearColor(0.6, 0.6, 0.6, 0);
 	

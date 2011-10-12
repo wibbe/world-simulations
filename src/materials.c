@@ -2,7 +2,6 @@
 #include "game.h"
 #include "util.h"
 
-#include <GL/glfw.h>
 #include <stdio.h>
 #include <stdlib.h>
 

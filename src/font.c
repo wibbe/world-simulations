@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <memory.h>
-#include <GL/glfw.h>
 
 #include "game.h"
 
