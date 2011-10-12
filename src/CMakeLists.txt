@@ -13,6 +13,7 @@ SET(SOURCE
 	stb_image.c
 	textures.c
 	materials.c
+	glew.c
 )
 
 SET(LIBRARIES
