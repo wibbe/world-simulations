@@ -43,9 +43,6 @@ void solve_water_flow(float dt, float * base, float * in, float * out, int width
 		float water_dist = MIN(sum, *in_it) * dt;
 		*out_it += *in_it - water_dist;
 		
-		if (*out_it < 0.01f)
-			*out_it = 0.0f;
-		
 		if (water_dist > 0.0f)
 		{
 			for (i = 0; i < 8; ++i)
