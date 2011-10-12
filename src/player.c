@@ -9,6 +9,7 @@ static float _player_yaw = 0.0f;
 static float _player_pitch = 0.0f;
 static double _time_stamp = -1.0f;
 static int _mouse_x = 0, _mouse_y = 0;
+static int _perform_picking = 0;
 
 static void _apply_camera()
 {
@@ -113,13 +114,18 @@ static void draw_gui(int width, int height)
 	disable_blend();
 }
 
-static void keyboard_event(int key, int action)
+static void input_event(int key, int action)
 {	
 	if (key == 'M' && action == GLFW_RELEASE)
 	{
 		printf("Reloading materials...\n");
 		reload_materials();
 	}
+
+	if (key == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+	  _perform_picking = 1;
+  }
 }
 
 void player_initialize()
@@ -127,7 +133,8 @@ void player_initialize()
 	_time_stamp = glfwGetTime();
 	
 	glfwGetMousePos(&_mouse_x, &_mouse_y);
-	glfwSetKeyCallback(&keyboard_event);
+	glfwSetKeyCallback(&input_event);
+	glfwSetMouseButtonCallback(&input_event);
 }
 
 void tick_frame()
@@ -148,6 +155,14 @@ void draw_frame(int width, int height)
 	
 	draw_world();
 	
+	if (_perform_picking)
+	{
+	  glFlush();
+	  _perform_picking = 0;
+	  Vec3 pos = mouse_pick();
+	  printf("Pick: (%3.1f, %3.1f, %3.1f)\n", pos.x, pos.y, pos.z);
+	}
+
 	_apply_gui(width, height);
 	draw_gui(width, height);
 }

@@ -14,6 +14,7 @@ SET(SOURCE
 	textures.c
 	materials.c
 	glew.c
+	picking.c
 )
 
 SET(LIBRARIES

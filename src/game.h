@@ -5,6 +5,8 @@
 #include <GL/glew.h>
 #include <GL/glfw.h>
 
+#include "vec3.h"
+
 /* Enums */
 enum FontTypes
 {
@@ -15,6 +17,7 @@ enum FontTypes
 
 /* Defines */
 #define WORLD_SCALE 2.0f
+#define WATER_LEVEL 6.0f
 
 /* Macros */
 #define PI 3.1415f
@@ -57,15 +60,18 @@ void textures_initialize();
 void font_initialize();
 void materials_initialize();
 
+/* Solver */
 void solve_water_flow(float dt, float * base, float * in, float * out, int width, int height);
 
-
+/* Rendering */
 void draw_frame();
-
 void render_heightmaps();
 
 void update_ground_heightmap(float * rock_height_data, float * sand_height_data);
 void update_water_heightmap(float * rock_height_data, float * sand_height_data, float * water_height_data);
+
+void enable_blend();
+void disable_blend();
 
 /* Textures */
 void enable_terrain_texture(GLenum unit);
@@ -87,8 +93,7 @@ int	font_get_height(int font);
 int	font_get_width(int font, char * msg, ...);
 void font_print(int font, int x, int y, char * msg, ...);
 
-
-void enable_blend();
-void disable_blend();
+Vec3 mouse_pick();
 
 #endif
+

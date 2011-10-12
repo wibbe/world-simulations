@@ -36,8 +36,9 @@ void world_initialize(int width, int height)
 		for (y = 0; y < world_height; ++y)
 		{
 			int index = _index(x, y);
+			float dist = MIN(1.0f, vlength(vsub(vec3(x, 0, y), vec3(world_width / 2.0f, 0, world_height / 2.0f))) / (world_width / 2.0f));
 			
-			_rock_level[index] = (simplex_noise(1, x * 0.04f, y * 0.04f, 1.0f) * 10.0f) + 
+			_rock_level[index] = (simplex_noise(1, x * 0.04f, y * 0.04f, 1.0f) * 5.0f * (1.0f + cos(dist * PI))) + 
 			                     (simplex_noise(4, x * 0.1f, y * 0.1f, 2.0f) * 1.0f);
 			_water_level_0[index] = _water_level_1[index] = 0.0f;
 			
@@ -64,6 +65,26 @@ void world_tick(float dt)
 	{
 		_water_level_old[_index(23, 21)] = 0.0f;
 	}
+
+	_water_level_old[_index(world_width / 2, world_height / 2 - 10)] = 0.2f;
+
+	for (i = 0; i < world_width; ++i)
+	{
+	  int idx1 = _index(i, 0);
+	  int idx2 = _index(i, world_height - 1);
+
+	  _water_level_old[idx1] = MAX(WATER_LEVEL - _rock_level[idx1], 0.0f);
+	  _water_level_old[idx2] = MAX(WATER_LEVEL - _rock_level[idx2], 0.0f);
+  }
+
+	for (i = 0; i < world_height; ++i)
+	{
+	  int idx1 = _index(0, i);
+	  int idx2 = _index(world_height - 1, i);
+
+	  _water_level_old[idx1] = MAX(WATER_LEVEL - _rock_level[idx1], 0.0f);
+	  _water_level_old[idx2] = MAX(WATER_LEVEL - _rock_level[idx2], 0.0f);
+  }
 	
 	solve_water_flow(dt * 8.0f, _rock_level, _water_level_old, _water_level_new, world_width, world_height);
 	
