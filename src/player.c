@@ -44,7 +44,7 @@ static void _apply_gui(int width, int height)
 
 static void _camera_control(float dt)
 {
-	#define PLAYER_SPEED 10.0f
+	#define PLAYER_SPEED 20.0f
 	#define PLAYER_SENSITIVITY 0.4f
 	
 	Vec3 movement = vzero();

@@ -117,14 +117,14 @@ void update_water_heightmap(float * rock_height_data, float * sand_height_data, 
 	{
 	  *ground_uv_it = *water_it;
 
-		if (*water_it < 0.00001f)
+		if (*water_it < 0.02f)
 		{
 			float sum = 0.0; //*rock_it + *sand_it;
 			int count = 0; //1;
 			for (i = 0; i < 8; ++i)
 			{
 				float * offset_it = water_it + offset[i];
-				if (offset_it >= water_height_data && offset_it < water_end && (*offset_it > 0.0f))
+				if (offset_it >= water_height_data && offset_it < water_end && (*offset_it > 0.02f))
 				{
 					sum += *(rock_it + offset[i]) + *(sand_it + offset[i]) + *offset_it;
 					count++;

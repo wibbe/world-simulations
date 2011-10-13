@@ -60,14 +60,16 @@ void world_tick(float dt)
   // River...
 	_water_level_old[_index(world_width / 2, world_height / 2 - 10)] += 5.0f * dt;
 
+   int zunami = glfwGetKey('N') == GLFW_PRESS;
+
   // Make sure we have water at the borders
 	for (i = 0; i < world_width; ++i)
 	{
 	  int idx1 = _index(i, 0);
 	  int idx2 = _index(i, world_height - 1);
 
-	  _water_level_old[idx1] = MAX(WATER_LEVEL - (_rock_level[idx1] + _sand_level[idx1]), 0.0f);
-	  _water_level_old[idx2] = MAX(WATER_LEVEL - (_rock_level[idx2] + _sand_level[idx2]), 0.0f);
+	  _water_level_old[idx1] = MAX(((zunami ? 5.0f : 1.0f) * WATER_LEVEL) - (_rock_level[idx1] + _sand_level[idx1]), 0.0f);
+	  _water_level_old[idx2] = MAX(((zunami ? 5.0f : 1.0f) * WATER_LEVEL) - (_rock_level[idx2] + _sand_level[idx2]), 0.0f);
   }
 
 	for (i = 0; i < world_height; ++i)

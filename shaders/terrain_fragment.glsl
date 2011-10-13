@@ -17,5 +17,8 @@ void main()
 	vec4 sand_color = texture2D(texture, uv_sand);
 	vec4 water_color = mix(vec4(1, 1, 1, 1), vec4(0, 0, 1, 1), min(gl_TexCoord[0].w / 5.0, 1.0));
 	
+	// Debug rendering of water 
+	//vec4 water_color = mix(vec4(1, 1, 1, 1), vec4(1, 0, 0, 1), gl_TexCoord[0].w > 0.02 ? 1.0 : 0.0);
+	
 	gl_FragColor = (mix(stone_color, sand_color, gl_TexCoord[0].z) * (0.3 + max(dot(normalize(normal), sun_dir), 0.0) * 0.7)) * water_color;
 }
