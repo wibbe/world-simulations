@@ -27,6 +27,7 @@ void init()
 	player_initialize();
 	textures_initialize();
 	materials_initialize();
+	environment_initialize(32.0f * WORLD_SCALE);
 }
 
 void destroy()
