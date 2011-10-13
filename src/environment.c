@@ -3,40 +3,66 @@
 #include "util.h"
 #include <stdlib.h>
 
-static float * _border_pos_vertex_array = 0;
-static unsigned short * _border_indicies = 0;
+#include "gfx/environment_walls.h"
+#include "gfx/environment_celling.h"
 
-#define RESOLUTION 32
+static float _radius;
 
 void environment_initialize(float radius)
 {
-  int i, count = RESOLUTION * 3;
-  _border_pos_vertex_array = malloc(sizeof(float) * 3 * count);
-  float * pos_it = _border_pos_vertex_array;
+   _radius = radius;
+}
 
-  float rad, step = (PI * 2.0f) / RESOLUTION;
-  for (rad = 0.0f; rad < (PI * 2.0f); rad += step, pos_it += 9)
-  {
-    float x = sin(rad);
-    float z = cos(rad);
+void render_environment_first()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+   
+   glDisable(GL_CULL_FACE);
+   
+   // Draw walls
+   glPushMatrix();
+   glScalef(_radius, 12.0f, _radius);
+   
+   enable_env_walls_material();
+   
+   glVertexPointer(3, GL_FLOAT, 0, environment_wallsVerts);
+   glNormalPointer(GL_FLOAT, 0, environment_wallsNormals);
+   glDrawArrays(GL_TRIANGLES, 0, environment_wallsNumVerts);
+   
+   disable_materials();
+   
+   glPopMatrix();
+   glEnable(GL_CULL_FACE);
+   
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+}
 
-    *(pos_it + 0) = x * radius;
-    *(pos_it + 1) = 0.0f;
-    *(pos_it + 2) = z * radius;
-
-    *(pos_it + 3) = x * radius;
-    *(pos_it + 4) = 10.0f;
-    *(pos_it + 5) = z * radius;
-
-    *(pos_it + 3) = x * (radius + 0.2f);
-    *(pos_it + 4) = 10.0f;
-    *(pos_it + 5) = z * (radius + 0.2f);
-  }
-
-  for (i = 0; i < RESOLUTION; ++i)
-  {
-    sbpush(_border_indicies, (i * 3));
-    sbpush(_border_indicies, (i * 3) + 1);
-  }
+void render_environment_last()
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+   
+   glDisable(GL_CULL_FACE);
+   
+   // Draw celling
+   glPushMatrix();
+   glTranslatef(0.0f, 12.0f, 0.0f);
+   glScalef(_radius + 1.0f, _radius + 1.0f, _radius + 1.0f);
+   
+   glColor4f(0.3f, 0.6f, 1.0f, 0.6f);
+   enable_blend();
+   
+   glVertexPointer(3, GL_FLOAT, 0, environment_cellingVerts);
+   glNormalPointer(GL_FLOAT, 0, environment_cellingNormals);
+   glDrawArrays(GL_TRIANGLES, 0, environment_cellingNumVerts);
+   
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	
+   glPopMatrix();
+   disable_blend();
+   glEnable(GL_CULL_FACE);
 }
 

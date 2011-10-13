@@ -17,7 +17,7 @@ enum FontTypes
 
 /* Defines */
 #define WORLD_SCALE 2.0f
-#define WATER_LEVEL 8.0f
+#define WATER_LEVEL 10.0f
 
 /* Macros */
 #define PI 3.1415f
@@ -57,6 +57,9 @@ void world_draw();
 void world_add_sand(float dt);
 void world_remove_sand(float dt);
 
+float heightmap_x_pos(float world_x);
+float heightmap_z_pos(float world_z);
+
 /* Initialization */
 void world_initialize(int width, int height);
 void player_initialize();
@@ -72,6 +75,8 @@ void solve_water_flow(float dt, float * rock, float * sand, float * in, float * 
 /* Rendering */
 void draw_frame();
 void render_heightmaps();
+void render_environment_first();
+void render_environment_last();
 
 void update_ground_heightmap(float * rock_height_data, float * sand_height_data);
 void update_water_heightmap(float * rock_height_data, float * sand_height_data, float * water_height_data);
@@ -89,6 +94,7 @@ void set_uv_offset_uniform(int tex, GLuint uniform);
 void reload_materials();
 
 void enable_terrain_material();
+void enable_env_walls_material();
 void disable_materials();
 
 /* Noise */

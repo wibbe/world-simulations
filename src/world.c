@@ -38,7 +38,7 @@ void world_initialize(int width, int height)
 		for (y = 0; y < world_height; ++y)
 		{
 			int index = _index(x, y);
-			float dist = MIN(1.0f, vlength(vsub(vec3(x, 0, y), vec3(world_width / 2.0f, 0, world_height / 2.0f))) / (world_width / 2.0f));
+			float dist = MIN(1.0f, vlength(vsub(vec3(x, 0, y), vec3(world_width / 2.0f, 0, world_height / 2.0f))) / (world_width / 3.0f));
 			
 			_rock_level[index] = (simplex_noise(1, x * 0.04f, y * 0.04f, 1.0f) * 8.0f * (1.0f + cos(dist * PI))) + 
 			                     (simplex_noise(4, x * 0.1f, y * 0.1f, 2.0f) * 1.0f);
@@ -66,8 +66,8 @@ void world_tick(float dt)
 	  int idx1 = _index(i, 0);
 	  int idx2 = _index(i, world_height - 1);
 
-	  _water_level_old[idx1] = MAX(WATER_LEVEL - _rock_level[idx1], 0.0f);
-	  _water_level_old[idx2] = MAX(WATER_LEVEL - _rock_level[idx2], 0.0f);
+	  _water_level_old[idx1] = MAX(WATER_LEVEL - (_rock_level[idx1] + _sand_level[idx1]), 0.0f);
+	  _water_level_old[idx2] = MAX(WATER_LEVEL - (_rock_level[idx2] + _sand_level[idx2]), 0.0f);
   }
 
 	for (i = 0; i < world_height; ++i)
@@ -75,8 +75,8 @@ void world_tick(float dt)
 	  int idx1 = _index(0, i);
 	  int idx2 = _index(world_height - 1, i);
 
-	  _water_level_old[idx1] = MAX(WATER_LEVEL - _rock_level[idx1], 0.0f);
-	  _water_level_old[idx2] = MAX(WATER_LEVEL - _rock_level[idx2], 0.0f);
+	  _water_level_old[idx1] = MAX(WATER_LEVEL - (_rock_level[idx1] + _sand_level[idx1]), 0.0f);
+	  _water_level_old[idx2] = MAX(WATER_LEVEL - (_rock_level[idx2] + _sand_level[idx2]), 0.0f);
   }
 	
 	// Step water simulation
@@ -93,17 +93,10 @@ void world_tick(float dt)
 	}
 }
 
-void world_draw()
-{
-	int x, y, i;
-	
-	render_heightmaps();
-}
-
 void world_add_sand(float dt)
 {
-  int x = floor(mouse_world_position.x / WORLD_SCALE);
-  int y = floor(mouse_world_position.z / WORLD_SCALE);
+  int x = floor(heightmap_x_pos(mouse_world_position.x) / WORLD_SCALE);
+  int y = floor(heightmap_z_pos(mouse_world_position.z) / WORLD_SCALE);
 
   if (x >= 0 && x < world_width &&
       y >= 0 && y < world_height)
@@ -117,8 +110,8 @@ void world_add_sand(float dt)
 
 void world_remove_sand(float dt)
 {
-  int x = floor(mouse_world_position.x / WORLD_SCALE);
-  int y = floor(mouse_world_position.z / WORLD_SCALE);
+  int x = floor(heightmap_x_pos(mouse_world_position.x) / WORLD_SCALE);
+  int y = floor(heightmap_z_pos(mouse_world_position.z) / WORLD_SCALE);
 
   if (x >= 0 && x < world_width &&
       y >= 0 && y < world_height)

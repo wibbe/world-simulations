@@ -163,6 +163,9 @@ static void render_debug_normals()
 
 void render_heightmaps()
 {
+   glPushMatrix();
+   glTranslatef(world_width * WORLD_SCALE * -0.5f, 0.0f, world_height * WORLD_SCALE * -0.5f);
+   
 	enable_terrain_texture(GL_TEXTURE0);
 	enable_terrain_material();
 	
@@ -194,5 +197,16 @@ void render_heightmaps()
 	disable_blend();
 		
 	glDisableClientState(GL_VERTEX_ARRAY);
+	
+   glPopMatrix();
 }
 
+float heightmap_x_pos(float world_x)
+{
+   return world_x + (world_width * WORLD_SCALE * 0.5f);
+}
+
+float heightmap_z_pos(float world_z)
+{
+   return world_z + (world_height * WORLD_SCALE * 0.5f);
+}

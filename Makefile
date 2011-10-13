@@ -12,6 +12,10 @@ configure-debug:
 compile:
 	make -C build
 
+gfx:
+	./scripts/obj2opengl.pl --noMove --noScale gfx/environment_walls.obj
+	./scripts/obj2opengl.pl --noMove --noScale gfx/environment_celling.obj
+
 run:
 	(cd build/bin && ./world-test)
 

@@ -101,11 +101,6 @@ static void _camera_control(float dt)
 	}
 }
 
-static void draw_world()
-{
-	world_draw();
-}
-
 static void draw_gui(int width, int height)
 {
 	enable_blend();
@@ -162,10 +157,13 @@ void draw_frame(int width, int height)
 	_apply_projection(width, height);	
 	_apply_camera();
 	
-	draw_world();
-	
+   render_environment_first();
+	render_heightmaps();
+
 	if (_perform_picking)
 	  mouse_world_position = mouse_pick();
+	
+	render_environment_last();
 
 	_apply_gui(width, height);
 	draw_gui(width, height);
