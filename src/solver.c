@@ -4,7 +4,8 @@
 
 void solve_water_flow(float dt, float * rock, float * sand, float * in, float * out, int width, int height)
 {
-	const int offset[8] = { -width - 1, -width, -width + 1, -1, 1, width - 1, width, width + 1 };
+	//const int offset[8] = { -width - 1, -width, -width + 1, -1, 1, width - 1, width, width + 1 };
+	const int offset[4] = { -width, -1, 1, width };
 	const int size = width * height;
 	float * rock_it = rock;
 	float * sand_it = sand;
@@ -26,7 +27,7 @@ void solve_water_flow(float dt, float * rock, float * sand, float * in, float * 
 		float sum = 0.0f;
 		
 		// Calculate sum
-		for (i = 0; i < 8; ++i)
+		for (i = 0; i < 4; ++i)
 		{
 			float * offset_rock = rock_it + offset[i];
 			
@@ -47,7 +48,7 @@ void solve_water_flow(float dt, float * rock, float * sand, float * in, float * 
 		
 		if (water_dist > 0.0f)
 		{
-			for (i = 0; i < 8; ++i)
+			for (i = 0; i < 4; ++i)
 			{
 				float * offset_rock = rock_it + offset[i];
 			

@@ -17,7 +17,7 @@ enum FontTypes
 
 /* Defines */
 #define WORLD_SCALE 2.0f
-#define WATER_LEVEL 6.0f
+#define WATER_LEVEL 8.0f
 
 /* Macros */
 #define PI 3.1415f

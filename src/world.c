@@ -40,9 +40,9 @@ void world_initialize(int width, int height)
 			int index = _index(x, y);
 			float dist = MIN(1.0f, vlength(vsub(vec3(x, 0, y), vec3(world_width / 2.0f, 0, world_height / 2.0f))) / (world_width / 2.0f));
 			
-			_rock_level[index] = (simplex_noise(1, x * 0.04f, y * 0.04f, 1.0f) * 5.0f * (1.0f + cos(dist * PI))) + 
+			_rock_level[index] = (simplex_noise(1, x * 0.04f, y * 0.04f, 1.0f) * 8.0f * (1.0f + cos(dist * PI))) + 
 			                     (simplex_noise(4, x * 0.1f, y * 0.1f, 2.0f) * 1.0f);
-      _sand_level[index] = 0.0f;
+			_sand_level[index] = MAX(0.0f, (simplex_noise(3, x * 0.05f, y * 0.05f, 3.0f) - 3.0f)) * 2.0f;
 			_water_level_0[index] = _water_level_1[index] = 0.0f;
 			
 			_maxworld_height = MAX(_maxworld_height, _rock_level[index]);

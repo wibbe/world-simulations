@@ -21,7 +21,7 @@ void init()
 	glEnable(GL_TEXTURE_2D);
 	
 	// Initialize the rest of the app
-	world_initialize(64, 64);
+	world_initialize(128, 128);
 	heightmap_initialize();
 	font_initialize();
 	player_initialize();
