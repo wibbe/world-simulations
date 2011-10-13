@@ -64,6 +64,7 @@ void heightmap_initialize();
 void textures_initialize();
 void font_initialize();
 void materials_initialize();
+void environment_initialize(float radius);
 
 /* Solver */
 void solve_water_flow(float dt, float * rock, float * sand, float * in, float * out, int width, int height);

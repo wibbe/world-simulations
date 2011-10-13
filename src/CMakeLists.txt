@@ -15,6 +15,7 @@ SET(SOURCE
 	materials.c
 	glew.c
 	picking.c
+	environment.c
 )
 
 SET(LIBRARIES
