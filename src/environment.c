@@ -17,20 +17,24 @@ void render_environment_first()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
    
    glDisable(GL_CULL_FACE);
    
    // Draw walls
    glPushMatrix();
    glScalef(_radius, 12.0f, _radius);
-   
+
+   enable_terrain_texture(GL_TEXTURE0);
    enable_env_walls_material();
    
    glVertexPointer(3, GL_FLOAT, 0, environment_wallsVerts);
    glNormalPointer(GL_FLOAT, 0, environment_wallsNormals);
+   glTexCoordPointer(2, GL_FLOAT, 0, environment_wallsTexCoords);
    glDrawArrays(GL_TRIANGLES, 0, environment_wallsNumVerts);
    
    disable_materials();
+   disable_texture(GL_TEXTURE0);
    
    glPopMatrix();
    glEnable(GL_CULL_FACE);

@@ -37,7 +37,8 @@ enum Textures
 	TEXTURE_DIRT,
 	TEXTURE_STONE,
 	TEXTURE_SAND,
-	TEXTURE_WATER
+	TEXTURE_WATER,
+	TEXTURE_STONE_SLAB
 };
 
 /* Helper functions */
@@ -66,7 +67,7 @@ void player_initialize();
 void heightmap_initialize();
 void textures_initialize();
 void font_initialize();
-void materials_initialize();
+void materials_initialize(float radius);
 void environment_initialize(float radius);
 
 /* Solver */

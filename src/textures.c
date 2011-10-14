@@ -91,6 +91,10 @@ void get_texture_uv(int tex, float * u, float * v, float * width, float * height
 			*u = 13.0f / 16.0f;
 			*v = 12.0f / 16.0f;
 			break;
+		case TEXTURE_STONE_SLAB:
+		  *u = 6.0f / 16.0f;
+		  *v = 3.0f / 16.0f;
+		  break;
 	}
 }
 

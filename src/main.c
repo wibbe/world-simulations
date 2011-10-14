@@ -26,7 +26,7 @@ void init()
 	font_initialize();
 	player_initialize();
 	textures_initialize();
-	materials_initialize();
+	materials_initialize(60.0f * WORLD_SCALE);
 	environment_initialize(60.0f * WORLD_SCALE);
 }
 

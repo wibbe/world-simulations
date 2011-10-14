@@ -19,6 +19,9 @@ gfx:
 run:
 	(cd build/bin && ./world-test)
 
+debug:
+	(cd build/bin && gdb ./world-test)
+
 clean:
 	make -C build clean
 
